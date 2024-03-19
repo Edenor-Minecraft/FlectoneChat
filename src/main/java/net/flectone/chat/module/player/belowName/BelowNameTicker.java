@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 
 public class BelowNameTicker extends FTicker {
 
@@ -54,8 +55,9 @@ public class BelowNameTicker extends FTicker {
     }
 
     @Override
-    public void cancel() {
+    public @NotNull CancelledState cancel() {
         unregisterObjective();
         super.cancel();
+        return null;
     }
 }

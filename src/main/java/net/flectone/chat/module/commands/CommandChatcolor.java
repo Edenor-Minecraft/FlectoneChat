@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,14 +119,14 @@ public class CommandChatcolor extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         String arg = args[args.length - 1];
 
-        isStartsWith(arg, "default");
-        isStartsWith(arg, "#1abaf0");
-        DEFAULT_MINECRAFT_COLORS.forEach(string -> isStartsWith(arg, "&" + string));
+        isStartsWith(arg, "default", ret);
+        isStartsWith(arg, "#1abaf0", ret);
+        DEFAULT_MINECRAFT_COLORS.forEach(string -> isStartsWith(arg, "&" + string, ret));
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

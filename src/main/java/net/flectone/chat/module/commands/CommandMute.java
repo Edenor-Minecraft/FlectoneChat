@@ -6,7 +6,7 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,7 @@ public class CommandMute extends FCommand {
 
         String time = args[1];
 
-        if (!isTimeString(time) || !StringUtils.isNumeric(time.substring(0, time.length() - 1))) {
+        if (isTimeString(time) || !StringUtils.isNumeric(time.substring(0, time.length() - 1))) {
             sendUsageMessage(commandSender, alias);
             return true;
         }
@@ -97,13 +97,13 @@ public class CommandMute extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
         switch (args.length) {
-            case 1 -> isConfigModePlayer(args[0]);
-            case 2 -> isFormatString(args[1]);
-            case 3 -> isTabCompleteMessage(commandSender, args[2], "reason");
+            case 1 -> isConfigModePlayer(args[0], ret);
+            case 2 -> isFormatString(args[1], ret);
+            case 3 -> isTabCompleteMessage(commandSender, args[2], "reason", ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

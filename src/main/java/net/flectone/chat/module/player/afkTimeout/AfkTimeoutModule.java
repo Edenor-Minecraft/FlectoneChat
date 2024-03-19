@@ -1,10 +1,12 @@
 package net.flectone.chat.module.player.afkTimeout;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.Pair;
 import net.flectone.chat.util.TimeUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +54,8 @@ public class AfkTimeoutModule extends FModule {
 
         fPlayer.setAfkSuffix(MessageUtil.formatAll(player, afkSuffix));
 
-        fPlayer.playSound(player, player, this.toString());
+        Bukkit.getServer().getRegionScheduler().run(FlectoneChat.getPlugin(), player.getLocation(), val -> fPlayer.playSound(player, player, this.toString()));
+
         fPlayer.updateTeam();
 
         if (!config.getVaultBoolean(player, this + ".message.enable")) return;

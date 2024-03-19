@@ -7,7 +7,7 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -16,7 +16,10 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class CommandBan extends FCommand {
 
@@ -71,7 +74,7 @@ public class CommandBan extends FCommand {
 
         String time = args.length == 1 ? "-1" : args[1];
 
-        if ((!isTimeString(time) || !StringUtils.isNumeric(time.substring(0, time.length() - 1)))
+        if ((isTimeString(time) || !StringUtils.isNumeric(time.substring(0, time.length() - 1)))
                 && !time.equals("-1") && !time.equals("permanent")) {
             sendUsageMessage(commandSender, alias);
             return true;
@@ -131,17 +134,19 @@ public class CommandBan extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
         switch (args.length) {
-            case 1 -> isConfigModePlayer(args[0]);
+            case 1 -> isConfigModePlayer(args[0], ret);
             case 2 -> {
-                isFormatString(args[1]);
-                isStartsWith(args[1], "permanent");
-                isStartsWith(args[1], "-1");
+                isFormatString(args[1], ret);
+                isStartsWith(args[1], "permanent", ret);
+                isStartsWith(args[1], "-1", ret);
             }
-            case 3 -> isTabCompleteMessage(commandSender, args[2], "reason");
+            case 3 -> isTabCompleteMessage(commandSender, args[2], "reason", ret);
         }
 
-        return getSortedTabComplete();
+        ret.removeIf(Objects::isNull);
+        Collections.sort(ret);
+        return ret;
     }
 }

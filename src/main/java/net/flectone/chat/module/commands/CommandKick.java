@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandKick extends FCommand {
@@ -78,17 +79,17 @@ public class CommandKick extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         switch (args.length) {
             case 1 -> {
-                isOnlinePlayer(args[0]);
-                isStartsWith(args[0], "@a");
+                isOnlinePlayer(args[0], ret);
+                isStartsWith(args[0], "@a", ret);
             }
-            case 2 -> isTabCompleteMessage(commandSender, args[1], "reason");
+            case 2 -> isTabCompleteMessage(commandSender, args[1], "reason", ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 
     public void kick(@NotNull Player toKick, @NotNull CommandSender commandSender, @NotNull CmdSettings cmdSettings, @NotNull String reason) {

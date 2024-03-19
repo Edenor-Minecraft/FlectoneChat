@@ -38,14 +38,12 @@ public class FSkinsRestorer implements FIntegration {
     }
 
     private void secondHook() {
-        Bukkit.getScheduler().runTaskLaterAsynchronously(FlectoneChat.getPlugin(), () -> {
-            try {
-                skinsRestorer = SkinsRestorerProvider.get();
-                FlectoneChat.info("SkinsRestorer detected and hooked");
-            } catch (Exception e) {
-                FlectoneChat.warning("SkinsRestorer is not initialized after all");
-            }
-        }, 200L);
+        try {
+            skinsRestorer = SkinsRestorerProvider.get();
+            FlectoneChat.info("SkinsRestorer detected and hooked");
+        } catch (Exception e) {
+            FlectoneChat.warning("SkinsRestorer is not initialized after all");
+        }
     }
 
     @Nullable

@@ -19,6 +19,7 @@ import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
 import net.flectone.chat.util.TimeUtil;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -149,6 +150,7 @@ public class FPlayer {
     }
 
     public void updateTeam() {
+        if (team == null) registerTeam();
         FModule fModule = moduleManager.get(NameTagModule.class);
         if (fModule instanceof NameTagModule nameTagModule) {
             nameTagModule.updateTeam(player, team);
@@ -222,8 +224,7 @@ public class FPlayer {
                 .replace("<reason>", reason)
                 .replace("<moderator>", ban.getModeratorName());
 
-        Bukkit.getScheduler().runTask(FlectoneChat.getPlugin(), () ->
-                player.kickPlayer(MessageUtil.formatAll(player, localMessage)));
+        player.kick(Component.text(MessageUtil.formatAll(player, localMessage)));
     }
 
     public void unban() {
@@ -245,7 +246,7 @@ public class FPlayer {
         int count = getCountWarns();
         String warnAction = commands.getString("warn.action." + count);
         if (!warnAction.isEmpty()) {
-            Bukkit.getScheduler().runTask(FlectoneChat.getPlugin(), () ->
+            Bukkit.getGlobalRegionScheduler().run(FlectoneChat.getPlugin(), v ->
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), warnAction.replace("<player>", getMinecraftName())));
         }
 
@@ -370,5 +371,14 @@ public class FPlayer {
         return player != null
                 ? player.isOnline() && !IntegrationsModule.isVanished(player)
                 : offlinePlayer != null && offlinePlayer.isOnline();
+    }
+
+    public Settings getSettings() {
+        if (settings != null) {
+            return settings;
+        } else {
+            FlectoneChat.getPlugin().getDatabase().getSettings(this);
+            return settings;
+        }
     }
 }

@@ -1,12 +1,12 @@
 package net.flectone.chat.manager;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FTicker;
 import net.flectone.chat.util.CommandsUtil;
 import org.bukkit.event.HandlerList;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class FActionManager {
 
     public void clearTickers() {
         if (tickerList.isEmpty()) return;
-        tickerList.stream().filter(fTicker -> !fTicker.isCancelled()).forEach(BukkitRunnable::cancel);
+        tickerList.stream().filter(fTicker -> !fTicker.isCancelled()).forEach(ScheduledTask::cancel);
 
         tickerList.clear();
     }

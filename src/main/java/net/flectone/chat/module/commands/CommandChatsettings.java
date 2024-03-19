@@ -183,11 +183,11 @@ public class CommandChatsettings extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
         if (args.length == 1) {
-            isStartsWith(args[0], "save");
+            isStartsWith(args[0], "save", ret);
         }
 
-        return getTAB_COMPLETE();
+        return ret;
     }
 }

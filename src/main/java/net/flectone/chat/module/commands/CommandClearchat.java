@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandClearchat extends FCommand {
@@ -54,16 +55,16 @@ public class CommandClearchat extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         if (!commandSender.hasPermission(OTHER_PERMISSION)) {
-            return getTAB_COMPLETE();
+            return ret;
         }
 
         if (args.length == 1) {
-            isStartsWith(args[0], "all");
+            isStartsWith(args[0], "all", ret);
         }
 
-        return getTAB_COMPLETE();
+        return ret;
     }
 }

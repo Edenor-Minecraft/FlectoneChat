@@ -1,5 +1,6 @@
 package net.flectone.chat.module.serverMessage.advancement;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.FComponentBuilder;
 import net.flectone.chat.component.FColorComponent;
 import net.flectone.chat.component.FComponent;
@@ -38,21 +39,25 @@ public class AdvancementModule extends FModule {
     }
 
     public void initAnnounce() {
-        Bukkit.getWorlds().forEach(world -> {
-            Object value = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
-            if (value == null) return;
+        Bukkit.getGlobalRegionScheduler().run(FlectoneChat.getPlugin(), val -> {
+            Bukkit.getWorlds().forEach(world -> {
+                Object value = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
+                if (value == null) return;
 
-            LAST_WORLD_ANNOUNCE_ADVANCEMENT_MAP.put(world, value);
-            setAnnounce(world, false);
+                LAST_WORLD_ANNOUNCE_ADVANCEMENT_MAP.put(world, value);
+                setAnnounce(world, false);
+            });
         });
     }
 
     public void terminateAnnounce() {
-        Bukkit.getWorlds().forEach(world -> {
-            Object value = LAST_WORLD_ANNOUNCE_ADVANCEMENT_MAP.get(world);
-            if (value == null) return;
+        Bukkit.getGlobalRegionScheduler().run(FlectoneChat.getPlugin(), val -> {
+            Bukkit.getWorlds().forEach(world -> {
+                Object value = LAST_WORLD_ANNOUNCE_ADVANCEMENT_MAP.get(world);
+                if (value == null) return;
 
-            setAnnounce(world, (boolean) value);
+                setAnnounce(world, (boolean) value);
+            });
         });
     }
 

@@ -11,7 +11,7 @@ afk:
 ball:
   enable: true
   aliases: []
-  features: [swear-protection, patterns, formatting]
+  features: [patterns, formatting]
 
   range: 0
 
@@ -35,7 +35,7 @@ me:
   enable: true
   aliases: []
 
-  features: [swear-protection, patterns, formatting]
+  features: [patterns, formatting]
   range: 0
 
 broadcast:
@@ -144,7 +144,7 @@ mark:
 tell:
   enable: true
   aliases: [ w, msg, message, send, m ]
-  features: [ swear-protection, patterns, formatting ]
+  features: [ patterns, formatting ]
 
   tab-complete-mode: 1
 
@@ -216,7 +216,7 @@ translateto:
 try:
   enable: true
   aliases: []
-  features: [ swear-protection, patterns, formatting ]
+  features: [ patterns, formatting ]
 
   range: 0
 
@@ -228,7 +228,7 @@ try:
 dice:
   enable: true
   aliases: []
-  features: [ swear-protection, patterns, formatting ]
+  features: [ patterns, formatting ]
 
   range: 0
 

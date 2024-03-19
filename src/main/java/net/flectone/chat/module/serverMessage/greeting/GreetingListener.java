@@ -26,7 +26,6 @@ public class GreetingListener extends FListener {
         Player player = event.getPlayer();
         if (hasNoPermission(player)) return;
 
-        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () ->
-                ((GreetingModule) getModule()).send(player));
+        ((GreetingModule) getModule()).send(player);
     }
 }

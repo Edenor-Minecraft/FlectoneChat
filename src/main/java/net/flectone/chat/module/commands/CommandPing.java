@@ -88,11 +88,11 @@ public class CommandPing extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
         if (args.length == 1) {
-            isOnlinePlayer(args[0]);
+            isOnlinePlayer(args[0], ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

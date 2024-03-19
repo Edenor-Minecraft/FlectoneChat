@@ -11,6 +11,7 @@ import su.plo.voice.api.addon.ServerAddonsLoader;
 import su.plo.voice.api.addon.annotation.Addon;
 import su.plo.voice.api.server.PlasmoVoiceServer;
 import su.plo.voice.api.server.mute.MuteDurationUnit;
+import su.plo.voice.api.server.socket.UdpServerConnection;
 
 import java.util.UUID;
 
@@ -26,12 +27,28 @@ public class FPlasmoVoice implements FIntegration, AddonInitializer {
 
     public void mute(@NotNull Player player, @Nullable UUID moderator, int time, @NotNull String reason) {
         if (voiceServer == null) return;
+        boolean isPresent = false;
+        for(UdpServerConnection connection : voiceServer.getUdpConnectionManager().getConnections()){
+            if (connection.getPlayer().getInstance().getUUID() == player.getUniqueId()){
+                isPresent = true;
+                break;
+            }
+        }
+        if (!isPresent) return;
 
         voiceServer.getMuteManager().mute(player.getUniqueId(), moderator, time, MuteDurationUnit.SECOND, reason, true);
     }
 
     public void unmute(@NotNull Player player) {
         if (voiceServer == null) return;
+        boolean isPresent = false;
+        for(UdpServerConnection connection : voiceServer.getUdpConnectionManager().getConnections()){
+            if (connection.getPlayer().getInstance().getUUID() == player.getUniqueId()){
+                isPresent = true;
+                break;
+            }
+        }
+        if (!isPresent) return;
 
         voiceServer.getMuteManager().unmute(player.getUniqueId(), true);
     }

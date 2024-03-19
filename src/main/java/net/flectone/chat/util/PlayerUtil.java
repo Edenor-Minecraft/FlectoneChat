@@ -12,7 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayerUtil {
@@ -86,9 +89,17 @@ public class PlayerUtil {
     public static Collection<? extends Player> getPlayersWithFeature(@NotNull Collection<? extends Player> playerCollection, @NotNull String path) {
         FConfiguration config = FlectoneChat.getPlugin().getFileManager().getConfig();
 
-        return playerCollection.stream()
-                .filter(player -> config.getVaultBoolean(player, path))
-                .collect(Collectors.toList());
+        List<Player> ret = new ArrayList<>();
+
+        Iterator<? extends Player> iterator = playerCollection.iterator();
+        while (iterator.hasNext()){
+            Player player = iterator.next();
+            if (config.getVaultBoolean(player , path)){
+                ret.add(player);
+            }
+        }
+
+        return ret;
     }
 
     @NotNull

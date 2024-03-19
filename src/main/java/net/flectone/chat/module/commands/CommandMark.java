@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandMark extends FCommand {
@@ -53,12 +54,12 @@ public class CommandMark extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         if (args.length == 1) {
-            Mark.COLOR_VALUES.forEach(string -> isStartsWith(args[0], string));
+            Mark.COLOR_VALUES.forEach(string -> isStartsWith(args[0], string, ret));
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

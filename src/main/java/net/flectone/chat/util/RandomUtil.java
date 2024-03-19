@@ -11,8 +11,4 @@ public class RandomUtil {
         return start == end ? start : start + RANDOM.nextInt(end - start);
     }
 
-    public static int nextInt(int bound) {
-        return RANDOM.nextInt(bound);
-    }
-
 }

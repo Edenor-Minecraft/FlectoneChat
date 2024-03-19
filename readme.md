@@ -66,10 +66,6 @@ F3, Motd, icons, TAB, etc.
 ![motd](https://i.imgur.com/LTnLCyF.png)
 ![tab](https://i.imgur.com/xrjgmdq.png)
 
-## Swear-protection!
-
-![swear-protection](https://i.imgur.com/X27JKVg.png)
-
 ## Moderation
 
 Warns, bans, mutes, kicks

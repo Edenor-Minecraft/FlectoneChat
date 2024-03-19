@@ -48,16 +48,14 @@ public class AutoMessageModule extends FModule {
         List<String> features = config.getVaultStringList(player, this + ".features");
         String message = incrementIndexAndGet(MESSAGE_MAP, MESSAGE_INDEX_MAP, player);
 
-        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () -> {
-            MessageBuilder messageBuilder = new MessageBuilder(player, null, message, features, true);
+        MessageBuilder messageBuilder = new MessageBuilder(player, null, message, features, true);
 
-            player.spigot().sendMessage(messageBuilder.buildMessage(null, player, ""));
+        player.sendMessage(messageBuilder.buildMessage(null, player, ""));
 
-            FModule fModule = moduleManager.get(SoundsModule.class);
-            if (fModule instanceof SoundsModule soundsModule) {
-                soundsModule.play(new FSound(player, player, this.toString()));
-            }
-        });
+        FModule fModule = moduleManager.get(SoundsModule.class);
+        if (fModule instanceof SoundsModule soundsModule) {
+            soundsModule.play(new FSound(player, player, this.toString()));
+        }
     }
 
     @NotNull

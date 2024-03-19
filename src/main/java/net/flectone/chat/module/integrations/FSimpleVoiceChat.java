@@ -87,6 +87,6 @@ public class FSimpleVoiceChat implements FIntegration, VoicechatPlugin {
         formatMessage = formatMessage.replace(System.lineSeparator(), "");
         formatMessage = MessageUtil.formatAll(player, formatMessage);
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(formatMessage));
+        player.sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(formatMessage));
     }
 }

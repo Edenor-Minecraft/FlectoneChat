@@ -17,18 +17,16 @@ import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.CommandsUtil;
 import net.flectone.chat.util.MessageUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -173,16 +171,14 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
         }
 
         @NotNull String finalMessage = message;
-        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () -> {
-            MessageBuilder messageBuilder = new MessageBuilder(player, itemStack, finalMessage, getFeatures(), true);
-            recipients.parallelStream().forEach(recipient -> {
-                recipient.spigot().sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable));
+        MessageBuilder messageBuilder = new MessageBuilder(player, itemStack, finalMessage, getFeatures(), true);
+        recipients.parallelStream().forEach(recipient -> {
+            recipient.sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable));
 
-                FModule fModule = moduleManager.get(SoundsModule.class);
-                if (fModule instanceof SoundsModule soundsModule) {
-                    soundsModule.play(new FSound(player, recipient, this.toString()));
-                }
-            });
+            FModule fModule = moduleManager.get(SoundsModule.class);
+            if (fModule instanceof SoundsModule soundsModule) {
+                soundsModule.play(new FSound(player, recipient, this.toString()));
+            }
         });
     }
 
@@ -234,73 +230,80 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
 
         return playerSet;
     }
-
-    public void isStartsWith(@NotNull String arg, @NotNull String string) {
+    public List<String> isStartsWith(@NotNull String arg, @NotNull String string, List<String> inlist) {
         if (string.toLowerCase().startsWith(arg.toLowerCase())
                 || arg.replace(" ", "").isEmpty()) {
-            if (TAB_COMPLETE.contains(string)) return;
-            TAB_COMPLETE.add(string);
+            if (inlist.contains(string)) return inlist;
+            inlist.add(string);
         }
+        return inlist;
     }
 
-    public void isFileKey(@NotNull FConfiguration file, @NotNull String arg) {
+    public List<String> isFileKey(@NotNull FConfiguration file, @NotNull String arg, List<String> inlist) {
         file.getKeys(true).parallelStream()
                 .filter(key -> !file.getString(key).contains("root='FConfiguration'"))
-                .forEachOrdered(key -> isStartsWith(arg, key));
+                .forEachOrdered(key -> isStartsWith(arg, key, inlist));
+
+        return inlist;
     }
 
-    public void isConfigModePlayer(@NotNull String arg) {
+    public List<String> isConfigModePlayer(@NotNull String arg, List<String> inlist) {
         switch (commands.getInt("command." + name + ".tab-complete-mode")) {
-            case 0 -> isOfflinePlayer(arg);
-            case 1 -> isOnlinePlayer(arg);
+            case 0 -> isOfflinePlayer(arg, inlist);
+            case 1 -> isOnlinePlayer(arg, inlist);
         }
+
+        return inlist;
     }
 
-    public void isOfflinePlayer(@NotNull String arg) {
+    public List<String> isOfflinePlayer(@NotNull String arg, List<String> inlist) {
         playerManager.getOfflinePlayers()
                 .parallelStream()
-                .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer));
+                .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer, inlist));
+
+        return inlist;
     }
 
-    public void isOnlinePlayer(@NotNull String arg) {
+    public List<String> isOnlinePlayer(@NotNull String arg, List<String> inlist) {
         Bukkit.getOnlinePlayers().parallelStream()
                 .filter(player -> !IntegrationsModule.isVanished(player))
-                .forEach(player -> isStartsWith(arg, player.getName()));
+                .forEach(player -> isStartsWith(arg, player.getName(), inlist));
+
+        return inlist;
     }
 
-    public void isFormatString(@NotNull String arg) {
+    public List<String> isFormatString(@NotNull String arg, List<String> inlist) {
         TIME_FORMATS.forEach(format -> {
             if (!arg.isEmpty() && StringUtils.isNumeric(arg.substring(arg.length() - 1))) {
-                isStartsWith(arg, arg + format);
+                isStartsWith(arg, arg + format, inlist);
                 return;
             }
 
-            isDigitInArray(arg, format, 1, 10);
+            isDigitInArray(arg, format, 1, 10, inlist);
         });
-    }
 
-    public void isTabCompleteMessage(@NotNull CommandSender commandSender, @NotNull String arg, @NotNull String localeKey) {
-        isStartsWith(arg, locale.getVaultString(commandSender, getModule() + ".tab-complete." + localeKey));
+        return inlist;
     }
-
-    public void isDigitInArray(@NotNull String arg, String string, int start, int end) {
+    public List<String> isTabCompleteMessage(@NotNull CommandSender commandSender, @NotNull String arg, @NotNull String localeKey, List<String> inlist) {
+        return isStartsWith(arg, locale.getVaultString(commandSender, getModule() + ".tab-complete." + localeKey), inlist);
+    }public List<String> isDigitInArray(@NotNull String arg, String string, int start, int end, List<String> inlist) {
         for (int x = start; x < end; x++) {
-            isStartsWith(arg, x + string);
+            isStartsWith(arg, x + string, inlist);
         }
+        return inlist;
     }
 
     public List<String> tabCompleteClear() {
-        TAB_COMPLETE.clear();
-        return TAB_COMPLETE;
+        return new ArrayList<>();
     }
-
-    public List<String> getSortedTabComplete() {
-        Collections.sort(TAB_COMPLETE);
-        return TAB_COMPLETE;
+    public List<String> getSortedTabComplete(List<String> inlist) {
+        inlist.removeIf(Objects::isNull);
+        Collections.sort(inlist);
+        return inlist;
     }
 
     public boolean isTimeString(@NotNull String string) {
-        return TIME_FORMATS.stream().anyMatch(string::contains);
+        return TIME_FORMATS.stream().noneMatch(string::contains);
     }
 
     public int stringToTime(@NotNull String string) {
@@ -327,8 +330,23 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
     }
 
     public void dispatchCommand(@NotNull CommandSender commandSender, @NotNull String command) {
-        Bukkit.getScheduler().runTask(FlectoneChat.getPlugin(), () ->
-                Bukkit.dispatchCommand(commandSender, command));
+        if (commandSender instanceof Entity entity){
+            entity.getScheduler().run(FlectoneChat.getPlugin(), v -> {
+                Bukkit.dispatchCommand(commandSender, command);
+            }, null);
+        }
+        else if (commandSender instanceof ConsoleCommandSender) {
+            Bukkit.getGlobalRegionScheduler().run(FlectoneChat.getPlugin(), v ->
+                    Bukkit.dispatchCommand(commandSender, command));
+        }
+        else {
+            try {
+                Bukkit.getGlobalRegionScheduler().run(FlectoneChat.getPlugin(), v ->
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
+            } catch (Exception e) {
+                FlectoneChat.warning("Failed to dispatch command!\n" + e.getMessage());
+            }
+        }
     }
 
     @Getter

@@ -82,9 +82,6 @@ player:
 player-message:
   enable: true
 
-  swear-protection:
-    enable: false
-
   patterns:
     enable: true
 

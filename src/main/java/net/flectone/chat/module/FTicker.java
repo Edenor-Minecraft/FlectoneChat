@@ -1,14 +1,18 @@
 package net.flectone.chat.module;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.file.FConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class FTicker extends BukkitRunnable implements FAction {
+public abstract class FTicker implements FAction, ScheduledTask, Runnable {
 
-    protected long delay = 0L;
+    protected long delay = 1L;
     protected long period;
 
     @Getter
@@ -32,6 +36,35 @@ public abstract class FTicker extends BukkitRunnable implements FAction {
     }
 
     public void runTaskTimer() {
-        super.runTaskTimer(FlectoneChat.getPlugin(), delay, period);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(FlectoneChat.getPlugin(), v -> this.run(), delay, period);
+    }
+
+    public void runTaskTimer(Location location) {
+        Bukkit.getRegionScheduler().runAtFixedRate(FlectoneChat.getPlugin(), location, v -> this.run(), delay, period);
+    }
+
+    @Override
+    public @NotNull CancelledState cancel(){
+        return null;
+    }
+
+    @Override
+    public @NotNull Plugin getOwningPlugin() {
+        return FlectoneChat.getPlugin();
+    }
+
+    @Override
+    public boolean isRepeatingTask() {
+        return period > 0;
+    }
+
+    @Override
+    public @NotNull ExecutionState getExecutionState() {
+        return null;
+    }
+
+    @Override
+    public void init() {
+
     }
 }

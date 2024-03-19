@@ -18,6 +18,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandTranslateto extends FCommand {
@@ -37,7 +38,7 @@ public class CommandTranslateto extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () ->
+        Bukkit.getGlobalRegionScheduler().run(FlectoneChat.getPlugin(), v ->
                 asyncOnCommand(commandSender, command, alias, args));
 
         return true;
@@ -79,25 +80,23 @@ public class CommandTranslateto extends FCommand {
         String formatString = locale.getVaultString(commandSender, this + ".message")
                 .replace("<language>", targetLanguage);
 
-        Bukkit.getScheduler().runTask(FlectoneChat.getPlugin(), () -> {
-            sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), formatString, message, true);
+        sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), formatString, message, true);
 
-            IntegrationsModule.sendDiscordTranslateto(cmdSettings.getSender(), targetLanguage, message);
-        });
+        IntegrationsModule.sendDiscordTranslateto(cmdSettings.getSender(), targetLanguage, message);
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         switch (args.length) {
-            case 1 -> isTabCompleteMessage(commandSender, args[0], "source-language");
-            case 2 -> isTabCompleteMessage(commandSender, args[1], "target-language");
-            case 3 -> isTabCompleteMessage(commandSender, args[2], "message");
+            case 1 -> isTabCompleteMessage(commandSender, args[0], "source-language", ret);
+            case 2 -> isTabCompleteMessage(commandSender, args[1], "target-language", ret);
+            case 3 -> isTabCompleteMessage(commandSender, args[2], "message", ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 
     public String translate(@NotNull String sourceLang, @NotNull String targetLang, String msg) {

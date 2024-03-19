@@ -131,12 +131,12 @@ public class CommandTell extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
         switch (args.length) {
-            case 1 -> isConfigModePlayer(args[0]);
-            case 2 -> isTabCompleteMessage(commandSender, args[1], "message");
+            case 1 -> isConfigModePlayer(args[0], ret);
+            case 2 -> isTabCompleteMessage(commandSender, args[1], "message", ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

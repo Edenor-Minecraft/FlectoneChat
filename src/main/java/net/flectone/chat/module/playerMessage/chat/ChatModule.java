@@ -33,18 +33,16 @@ public class ChatModule extends FModule {
         message = IntegrationsModule.interactiveChatMark(message, sender.getUniqueId());
 
         @NotNull String finalMessage = message;
-        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () -> {
-            MessageBuilder messageBuilder = new MessageBuilder(sender, sender.getInventory().getItemInMainHand(), finalMessage, featuresList, true);
+        MessageBuilder messageBuilder = new MessageBuilder(sender, sender.getInventory().getItemInMainHand(), finalMessage, featuresList, true);
 
-            recipientsList.forEach(player ->
-                    player.spigot().sendMessage(messageBuilder.buildFormat(sender, player, chatFormat, true)));
+        recipientsList.forEach(player ->
+                player.sendMessage(messageBuilder.buildFormat(sender, player, chatFormat, true)));
 
-            FModule fModule = moduleManager.get(ChatBubbleModule.class);
-            if (fModule instanceof ChatBubbleModule chatBubbleModule) {
-                chatBubbleModule.add(sender, messageBuilder.getMessage(""));
-            }
+        FModule fModule = moduleManager.get(ChatBubbleModule.class);
+        if (fModule instanceof ChatBubbleModule chatBubbleModule) {
+            chatBubbleModule.add(sender, messageBuilder.getMessage(""));
+        }
 
-            noRecipientRunnable.run();
-        });
+        noRecipientRunnable.run();
     }
 }

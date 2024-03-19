@@ -5,7 +5,7 @@ import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -102,11 +102,11 @@ public class CommandUnwarn extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
         switch (args.length) {
             case 1 -> {
                 for (String playerName : playerManager.getWarnsPlayers().keySet()) {
-                    isStartsWith(args[0], playerName);
+                    isStartsWith(args[0], playerName, ret);
                 }
             }
             case 2 -> {
@@ -115,11 +115,11 @@ public class CommandUnwarn extends FCommand {
 
                 int k = 1;
                 for (Moderation ignored : warns) {
-                    isStartsWith(args[1], String.valueOf(k++));
+                    isStartsWith(args[1], String.valueOf(k++), ret);
                 }
             }
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

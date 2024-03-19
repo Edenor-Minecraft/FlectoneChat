@@ -94,12 +94,12 @@ public class CommandIgnore extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
 
         if (args.length == 1) {
-            isConfigModePlayer(args[0]);
+            isConfigModePlayer(args[0], ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

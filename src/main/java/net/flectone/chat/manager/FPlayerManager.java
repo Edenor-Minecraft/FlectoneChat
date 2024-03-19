@@ -160,6 +160,7 @@ public class FPlayerManager {
 
     @Nullable
     public FPlayer get(@NotNull Player player) {
+        if (player == null) return null;
         return get(player.getName());
     }
 

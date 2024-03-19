@@ -4,13 +4,17 @@ plugins {
 }
 
 group = 'net'
-version = '4.5.1'
+version = '5.0.0'
 
 repositories {
     mavenCentral()
     maven {
-        name = "spigotmc-repo"
-        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "foldenor-repo"
+        url = "https://maven.pkg.github.com/Edenor-Minecraft/Foldenor/"
     }
     maven {
         name 'codemc'
@@ -50,28 +54,36 @@ repositories {
         url = "https://repo.plo.su"
     }
 
+    maven {
+        name = "sonatype-oss-snapshots1"
+        url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+    }
+
 }
 
 dependencies {
     implementation files("LICENSE")
 
-    implementation "com.iridium:IridiumColorAPI:1.0.6"
-    implementation 'org.jetbrains:annotations:24.0.0'
+    implementation "com.iridium:IridiumColorAPI:1.0.9"
+    implementation 'org.jetbrains:annotations:24.0.1'
+    implementation "org.apache.commons:commons-lang3:3.14.0"
 
     compileOnly "su.plo.voice.api:server:2.0.3"
 
-    compileOnly 'net.skinsrestorer:skinsrestorer-api:15.0.4'
+    compileOnly 'net.skinsrestorer:skinsrestorer-api:15.0.7'
 
-    compileOnly "com.loohp:InteractiveChat:4.2.7.2"
+    compileOnly "com.loohp:InteractiveChat:4.2.9.0"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
-    compileOnly "me.clip:placeholderapi:2.11.3"
-    compileOnly "de.maxhenkel.voicechat:voicechat-api:2.4.11"
+    compileOnly "me.clip:placeholderapi:2.11.5"
+    compileOnly "de.maxhenkel.voicechat:voicechat-api:2.5.0"
     compileOnly "net.luckperms:api:5.4"
-    compileOnly "com.github.LeonMangler:SuperVanish:6.2.17"
-    compileOnly "com.discordsrv:discordsrv:1.25.1"
-    compileOnly "net.md-5:bungeecord-api:1.16-R0.3"
+    compileOnly "com.github.LeonMangler:SuperVanish:6.2.18-3"
+    compileOnly "com.discordsrv:discordsrv:1.27.0"
+    compileOnly "net.md-5:bungeecord-api:1.20-R0.2"
+    implementation 'net.kyori:adventure-text-serializer-bungeecord:4.3.0'
+    implementation "net.kyori:adventure-api:4.16.0"
 
-    compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
+    compileOnly "dev.edenor.foldenor:foldenor-api:1.20.4-R0.1-SNAPSHOT"
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
@@ -80,20 +92,13 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
-def targetJavaVersion = 16
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
     }
 }
 
@@ -108,7 +113,4 @@ processResources {
 
 shadowJar {
     archiveFileName = "FlectoneChat-" + version + ".jar"
-    dependencies {
-        exclude(dependency('org.jetbrains:annotations:24.0.0'))
-    }
 }

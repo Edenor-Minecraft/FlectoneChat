@@ -47,8 +47,6 @@ public class FileManager {
     @Getter
     private FConfiguration integrations;
     @Getter
-    private FConfiguration swears;
-    @Getter
     private FConfiguration cooldowns;
 
     public void init() {
@@ -66,10 +64,6 @@ public class FileManager {
         integrations = Type.INTEGRATIONS.load();
         cooldowns = Type.COOLDOWNS.load();
         listeners = Type.LISTENERS.load();
-
-        if (modules.getBoolean("player-message.swear-protection.enable")) {
-            swears = Type.SWEARS.load();
-        }
 
         loadIcons();
 
@@ -198,7 +192,6 @@ public class FileManager {
         COMMANDS(SETTINGS_FOLDER, "commands"),
         SOUNDS(SETTINGS_FOLDER, "sounds"),
         INTEGRATIONS(SETTINGS_FOLDER, "integrations"),
-        SWEARS(SETTINGS_FOLDER, "swears", false),
         COOLDOWNS(SETTINGS_FOLDER, "cooldowns"),
         LISTENERS(SETTINGS_FOLDER, "listeners");
 

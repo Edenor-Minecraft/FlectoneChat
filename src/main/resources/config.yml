@@ -206,11 +206,6 @@ default:
   player-message:
     enable: true
 
-    swear-protection:
-      enable: false
-      mode: list
-      symbol: "❤"
-
     patterns:
       enable: true
 
@@ -322,13 +317,13 @@ default:
 
     anvil:
       enable: true
-      features: [swear-protection, patterns, formatting]
+      features: [patterns, formatting]
     book:
       enable: true
-      features: [swear-protection, patterns, formatting]
+      features: [patterns, formatting]
     sign:
       enable: true
-      features: [swear-protection, patterns, formatting]
+      features: [patterns, formatting]
 
     chat:
       enable: true
@@ -337,7 +332,7 @@ default:
         local:
           enable: true
           priority: 0
-          features: [swear-protection, patterns, formatting]
+          features: [patterns, formatting]
           worlds: []
           format: "<player_name_display>&&2: <message>"
 
@@ -355,7 +350,7 @@ default:
         global:
           enable: true
           priority: 5
-          features: [swear-protection, patterns, formatting, mention]
+          features: [patterns, formatting, mention]
           worlds: []
           format: "<player_name_display>&&2 » <message>"
 

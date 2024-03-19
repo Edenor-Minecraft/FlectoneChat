@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandStream extends FCommand {
@@ -119,15 +120,15 @@ public class CommandStream extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         if (args.length == 1) {
-            isStartsWith(args[0], "start");
-            isStartsWith(args[0], "end");
+            isStartsWith(args[0], "start", ret);
+            isStartsWith(args[0], "end", ret);
         } else if (args[0].equalsIgnoreCase("start")) {
-            isTabCompleteMessage(commandSender, args[1], "stream-url");
+            isTabCompleteMessage(commandSender, args[1], "stream-url", ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

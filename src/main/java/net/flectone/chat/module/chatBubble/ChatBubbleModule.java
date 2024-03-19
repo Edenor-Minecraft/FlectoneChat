@@ -3,6 +3,7 @@ package net.flectone.chat.module.chatBubble;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ChatBubbleModule extends FModule {
 
@@ -99,7 +101,7 @@ public class ChatBubbleModule extends FModule {
         nameTag.setRadius(0);
 
         vehicle.addPassenger(nameTag);
-        nameTag.setCustomName(message);
+        nameTag.customName(Component.text(message));
         nameTag.setCustomNameVisible(true);
 
         nameTag.setWaitTime(0);

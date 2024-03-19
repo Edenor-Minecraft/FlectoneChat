@@ -163,13 +163,13 @@ public class CommandTictactoe extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
 
         switch (args.length) {
-            case 1 -> isOnlinePlayer(args[0]);
-            case 2 -> isDigitInArray(args[1], "", 3, 10);
+            case 1 -> isOnlinePlayer(args[0], ret);
+            case 2 -> isDigitInArray(args[1], "", 3, 10, ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

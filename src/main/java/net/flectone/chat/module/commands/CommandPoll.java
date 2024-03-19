@@ -10,13 +10,14 @@ import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandPoll extends FCommand {
@@ -149,33 +150,33 @@ public class CommandPoll extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
         switch (args.length) {
             case 1 -> {
-                isStartsWith(args[0], "vote");
+                isStartsWith(args[0], "vote", ret);
 
                 if (commandSender.hasPermission(CREATE_PERMISSION)) {
-                    isStartsWith(args[0], "create");
+                    isStartsWith(args[0], "create", ret);
                 }
             }
             case 2 -> {
                 if (args[0].equalsIgnoreCase("create")) {
-                    isTabCompleteMessage(commandSender, args[1], "message");
+                    isTabCompleteMessage(commandSender, args[1], "message", ret);
                 } else  {
                     PollManager.getPOLL_MAP().values()
                             .parallelStream()
                             .filter(poll -> !poll.isExpired())
-                            .forEach(poll -> isStartsWith(args[1], String.valueOf(poll.getId())));
+                            .forEach(poll -> isStartsWith(args[1], String.valueOf(poll.getId()), ret));
                 }
             }
             case 3 -> {
                 if (args[0].equalsIgnoreCase("vote")) {
-                    isStartsWith(args[2], "agree");
-                    isStartsWith(args[2], "disagree");
+                    isStartsWith(args[2], "agree", ret);
+                    isStartsWith(args[2], "disagree", ret);
                 }
             }
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

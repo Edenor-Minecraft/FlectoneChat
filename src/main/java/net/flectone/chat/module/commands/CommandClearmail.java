@@ -6,13 +6,14 @@ import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandClearmail extends FCommand {
@@ -107,10 +108,10 @@ public class CommandClearmail extends FCommand {
                                                 @NotNull String alias, @NotNull String[] args) {
 
         if (!(commandSender instanceof Player sender)) return null;
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();;
 
         switch (args.length) {
-            case 1 -> isOfflinePlayer(args[0]);
+            case 1 -> isOfflinePlayer(args[0], ret);
             case 2 -> {
                 String playerName = args[0];
                 FPlayer fPlayer = playerManager.get(playerName);
@@ -120,10 +121,10 @@ public class CommandClearmail extends FCommand {
                 int[] counter = {0};
                 fPlayer.getMailList().stream()
                         .filter(mail -> mail.getSender().equals(sender.getUniqueId().toString()))
-                        .forEach(mail -> isStartsWith(args[1], String.valueOf(counter[0]++)));
+                        .forEach(mail -> isStartsWith(args[1], String.valueOf(counter[0]++), ret));
             }
         }
 
-        return getSortedTabComplete();
+        return ret;
     }
 }

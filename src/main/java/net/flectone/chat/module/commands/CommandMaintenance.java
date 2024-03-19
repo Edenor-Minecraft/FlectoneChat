@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandMaintenance extends FCommand {
@@ -92,12 +93,12 @@ public class CommandMaintenance extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
         if (args.length == 1) {
-            isStartsWith(args[0], "on");
-            isStartsWith(args[0], "off");
+            isStartsWith(args[0], "on", ret);
+            isStartsWith(args[0], "off", ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

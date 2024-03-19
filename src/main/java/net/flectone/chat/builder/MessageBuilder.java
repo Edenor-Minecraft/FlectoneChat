@@ -13,8 +13,9 @@ import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.playerMessage.formatting.FormattingModule;
 import net.flectone.chat.module.playerMessage.patterns.PatternsModule;
-import net.flectone.chat.module.playerMessage.swearProtection.SwearProtectionModule;
 import net.flectone.chat.util.MessageUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.ChatColor;
@@ -54,12 +55,6 @@ public class MessageBuilder {
             FModule fModule = moduleManager.get(PatternsModule.class);
             if (fModule instanceof PatternsModule patternsModule) {
                 message = patternsModule.replace(sender, message);
-            }
-        }
-        if (featuresList.contains("swear-protection")) {
-            FModule fModule = moduleManager.get(SwearProtectionModule.class);
-            if (fModule instanceof SwearProtectionModule swearProtectionModule) {
-                message = swearProtectionModule.replace(sender, message);
             }
         }
 
@@ -118,7 +113,7 @@ public class MessageBuilder {
     }
 
     @NotNull
-    public BaseComponent[] buildFormat(@Nullable Player sender, @NotNull Player recipient, @NotNull String format, boolean formatClickable) {
+    public Component buildFormat(@Nullable Player sender, @NotNull Player recipient, @NotNull String format, boolean formatClickable) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String[] formats = format.split("<message>");
@@ -141,7 +136,7 @@ public class MessageBuilder {
             componentBuilder.append(FComponent.fromLegacyText(color + string), ComponentBuilder.FormatRetention.NONE);
         }
 
-        return componentBuilder.create();
+        return BungeeComponentSerializer.get().deserialize(componentBuilder.create());
     }
 
     @NotNull

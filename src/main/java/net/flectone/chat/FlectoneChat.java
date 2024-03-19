@@ -64,7 +64,7 @@ public final class FlectoneChat extends JavaPlugin {
         playerManager.loadOnlinePlayers();
         playerManager.loadTabCompleteData();
 
-        if (fileManager.getConfig().getBoolean("plugin.bStats.enable")) {
+        /*if (fileManager.getConfig().getBoolean("plugin.bStats.enable")) {
             Metrics bStats = new Metrics(this, 20290);
             bStats.addCustomChart(new Metrics.SimplePie("plugin_language", () ->
                     fileManager.getConfig().getString("plugin.language")));
@@ -73,7 +73,7 @@ public final class FlectoneChat extends JavaPlugin {
                 moduleManager.getModules().forEach(fModule -> map.put(fModule.getName(), 1));
                 return map;
             }));
-        }
+        }*/
 
         checkLastPluginVersion();
     }

@@ -127,7 +127,7 @@ public class Mark {
     }
 
     public void unMarkEntityScheduler() {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        entity.getScheduler().runDelayed(plugin, val -> {
             entity.setGlowing(false);
             if (entity instanceof Player entityPlayer) {
                 FPlayer fPlayer = playerManager.get(entityPlayer);
@@ -142,7 +142,7 @@ public class Mark {
             if (team == null) return;
 
             team.removeEntry(entity.getUniqueId().toString());
-        }, 40);
+        }, null, 40);
     }
 
     public void markEntity() {

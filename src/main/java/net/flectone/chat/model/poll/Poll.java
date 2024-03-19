@@ -32,10 +32,10 @@ public class Poll {
         FConfiguration commands = plugin.getFileManager().getCommands();
 
         this.id = commands.getInt("poll.last-id") + 1;
-        int time = commands.getInt("poll.time");
+        int time = commands.getInt("poll.time") > 0 ? commands.getInt("poll.time") : 1;
         PollManager.add(this);
 
-        Bukkit.getScheduler().runTaskLater(FlectoneChat.getPlugin(), () -> {
+        Bukkit.getGlobalRegionScheduler().runDelayed(FlectoneChat.getPlugin(), v -> {
             isExpired = true;
 
             FConfiguration locale = plugin.getFileManager().getLocale();

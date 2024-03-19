@@ -81,15 +81,15 @@ public class CommandUnban extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
         if (args.length == 1) {
             playerManager.getBannedPlayers()
                     .stream()
                     .map(Bukkit::getOfflinePlayer)
                     .filter(offlinePlayer -> offlinePlayer.getName() != null)
-                    .forEach(offlinePlayer -> isStartsWith(args[0], offlinePlayer.getName()));
+                    .forEach(offlinePlayer -> isStartsWith(args[0], offlinePlayer.getName(), ret));
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

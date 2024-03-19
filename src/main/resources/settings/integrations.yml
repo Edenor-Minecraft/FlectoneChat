@@ -24,7 +24,7 @@ SkinsRestorer:
   enable: true
 DiscordSRV:
   enable: true
-  features: [ swear-protection, patterns, formatting ]
+  features: [ patterns, formatting ]
 
   message:
     advancement-task:

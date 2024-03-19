@@ -43,10 +43,10 @@ public class FAdvancement {
         Object display = NMSUtil.getObject(nmsAdv, IS_19_4 && !IS_20_3 ? "d" : "c");
         if (display == null) return;
 
-        if (IS_20_2) {
+        /*if (IS_20_2) {
             Optional<?> o = ((Optional<?>) display);
             if (o.isPresent()) display = o.get();
-        }
+        }*/
 
         Object rawTitle = NMSUtil.getObject(display, "a");
         Object rawDesc = NMSUtil.getObject(display, "b");

@@ -9,6 +9,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerListTicker extends FTicker {
 
@@ -50,8 +51,9 @@ public class PlayerListTicker extends FTicker {
     }
 
     @Override
-    public void cancel() {
+    public @NotNull CancelledState cancel() {
         unregisterPingObjective();
         super.cancel();
+        return null;
     }
 }

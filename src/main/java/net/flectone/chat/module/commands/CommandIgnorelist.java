@@ -7,13 +7,14 @@ import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -160,19 +161,19 @@ public class CommandIgnorelist extends FCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         if (args.length == 1) {
             FPlayer fPlayer = playerManager.get(commandSender.getName());
-            if (fPlayer == null) return getTAB_COMPLETE();
+            if (fPlayer == null) return ret;
 
             int perPage = commands.getInt(getName() + ".per-page");
 
             int lastPage = (int) Math.ceil((double) fPlayer.getIgnoreList().size() / perPage);
 
-            isDigitInArray(args[0], "", 1, lastPage + 1);
+            isDigitInArray(args[0], "", 1, lastPage + 1, ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

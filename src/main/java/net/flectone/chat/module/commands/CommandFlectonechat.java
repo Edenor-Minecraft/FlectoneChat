@@ -10,9 +10,8 @@ import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
-import net.flectone.chat.util.SwearUtil;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -120,9 +119,6 @@ public class CommandFlectonechat extends FCommand {
         plugin.getPlayerManager().loadOnlinePlayers();
         plugin.getPlayerManager().loadTabCompleteData();
 
-        SwearUtil.loadSwearsList();
-        SwearUtil.loadSwearsRegex();
-
         sendDefaultMessage(commandSender, this + ".message");
 
         if (!cmdSettings.isConsole()) {
@@ -136,19 +132,19 @@ public class CommandFlectonechat extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
 
         switch (args.length) {
             case 1 -> {
-                isStartsWith(args[0], "reload");
-                isStartsWith(args[0], "set");
+                isStartsWith(args[0], "reload", ret);
+                isStartsWith(args[0], "set", ret);
             }
             case 2 -> {
                 if (!args[0].equalsIgnoreCase("set")) break;
 
                 for (var type : FileManager.Type.values()) {
                     if (type.getFile() == null) continue;
-                    isStartsWith(args[1], type.getFileName());
+                    isStartsWith(args[1], type.getFileName(), ret);
                 }
             }
             case 3 -> {
@@ -158,7 +154,7 @@ public class CommandFlectonechat extends FCommand {
 
                 if (fileType.isEmpty() || fileType.get().getFile() == null) break;
 
-                isFileKey(fileType.get().getFile(), args[2]);
+                isFileKey(fileType.get().getFile(), args[2], ret);
             }
 
             case 4 -> {
@@ -173,18 +169,18 @@ public class CommandFlectonechat extends FCommand {
                     Object object = fileType.get().getFile().get(args[2]);
                     if (object != null) {
                         if(object instanceof Boolean) {
-                            isStartsWith(args[3], "true");
-                            isStartsWith(args[3], "false");
+                            isStartsWith(args[3], "true", ret);
+                            isStartsWith(args[3], "false", ret);
                             break;
                         }
 
                         isStartsWith(args[3], String.valueOf(object)
-                                .replace(System.lineSeparator(), "\\n"));
+                                .replace(System.lineSeparator(), "\\n"), ret);
                     }
                 }
             }
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandMail extends FCommand {
@@ -121,13 +122,13 @@ public class CommandMail extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = new ArrayList<>();
 
         switch (args.length) {
-            case 1 -> isOfflinePlayer(args[0]);
-            case 2 -> isTabCompleteMessage(commandSender, args[1], "message");
+            case 1 -> isOfflinePlayer(args[0], ret);
+            case 2 -> isTabCompleteMessage(commandSender, args[1], "message", ret);
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

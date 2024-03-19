@@ -81,12 +81,12 @@ public class CommandUnmute extends FCommand {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String alias, @NotNull String[] args) {
 
-        tabCompleteClear();
+        List<String> ret = tabCompleteClear();
         if (args.length == 1) {
             playerManager.getMutedPlayers().forEach(string ->
-                    isStartsWith(args[0], string));
+                    isStartsWith(args[0], string, ret));
         }
 
-        return getSortedTabComplete();
+        return getSortedTabComplete(ret);
     }
 }

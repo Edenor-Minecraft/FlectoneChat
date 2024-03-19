@@ -1,11 +1,13 @@
 package net.flectone.chat.module.chatBubble;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.FTicker;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.AreaEffectCloud;
@@ -31,8 +33,7 @@ public class ChatBubbleTicker extends FTicker {
         PlayerUtil.getPlayersWithFeature(getModule() + ".enable")
                 .stream()
                 .filter(player -> !player.isInsideVehicle() || !(player.getVehicle() instanceof AreaEffectCloud))
-                .forEach(player -> {
-
+                .forEach(player -> Bukkit.getRegionScheduler().run(FlectoneChat.getPlugin(), player.getLocation(), val -> {
                     FPlayer fPlayer = playerManager.get(player);
                     if(fPlayer == null) return;
                     if (fPlayer.getChatBubbles().isEmpty()) return;
@@ -63,6 +64,6 @@ public class ChatBubbleTicker extends FTicker {
 
                     ((ChatBubbleModule) getModule()).spawn(player, message, MessageUtil.formatAll(player, color),
                             height, maxPerLine, readSpeed);
-                });
+                }));
     }
 }

@@ -376,3 +376,5 @@ permissions:
     default: op
   flectonechat.commands.geolocate:
     default: op
+  flectonechat.see.punishments:
+    default: op

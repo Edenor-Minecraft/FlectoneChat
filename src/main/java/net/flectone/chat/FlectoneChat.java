@@ -74,8 +74,6 @@ public final class FlectoneChat extends JavaPlugin {
                 return map;
             }));
         }*/
-
-        checkLastPluginVersion();
     }
 
     public void setScoreBoard() {
@@ -108,33 +106,5 @@ public final class FlectoneChat extends JavaPlugin {
 
     public static void warning(String message) {
         getPlugin().getLogger().warning(message);
-    }
-
-    private void checkLastPluginVersion() {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.modrinth.com/v2/project/flectonechat/version"))
-                .build();
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(s -> {
-                    JSONParser parser = new JSONParser();
-                    try {
-                        JSONArray json = (JSONArray) parser.parse(s);
-
-                        String currentVersion = this.getDescription().getVersion();
-                        String lastVersion = (String) ((JSONObject) json.get(0)).get("version_number");
-
-                        if (fileManager.compareVersions(currentVersion, lastVersion) == -1) {
-                            warning("Upgrade your " + currentVersion + " version of plugin to " + lastVersion);
-                            warning("Url: https://modrinth.com/plugin/flectonechat/version/" + lastVersion);
-                        }
-
-                    } catch (ParseException e) {
-                        warning("⚠ Failed to get latest plugin version");
-                    }
-
-                });
     }
 }

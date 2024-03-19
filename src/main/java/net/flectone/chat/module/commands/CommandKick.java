@@ -99,7 +99,10 @@ public class CommandKick extends FCommand {
         serverMessage = MessageUtil.formatPlayerString(toKick, serverMessage);
         serverMessage = MessageUtil.formatAll(cmdSettings.getSender(), serverMessage);
 
-        sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), serverMessage, "", false);
+        for (Player pl : Bukkit.getOnlinePlayers()){
+            if (pl.hasPermission("flectonechat.see.punishments"))
+                pl.sendMessage(serverMessage);
+        }
 
         String playerMessage = locale.getVaultString(commandSender, this + ".player-message")
                 .replace("<reason>", reason)

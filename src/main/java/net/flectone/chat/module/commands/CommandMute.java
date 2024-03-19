@@ -7,8 +7,10 @@ import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -80,7 +82,10 @@ public class CommandMute extends FCommand {
                 .replace("<reason>", reason)
                 .replace("<moderator>", commandSender.getName());
 
-        sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), serverMessage, "", false);
+        for (Player pl : Bukkit.getOnlinePlayers()){
+            if (pl.hasPermission("flectonechat.see.punishments"))
+                pl.sendMessage(serverMessage);
+        }
 
         String moderator = cmdSettings.getSender() != null
                 ? cmdSettings.getSender().getUniqueId().toString()

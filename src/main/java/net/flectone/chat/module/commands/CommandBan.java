@@ -13,6 +13,7 @@ import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -118,7 +119,10 @@ public class CommandBan extends FCommand {
                 .replace("<reason>", reason)
                 .replace("<moderator>", commandSender.getName());
 
-        sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), globalMessage, "", false);
+        for (Player pl : Bukkit.getOnlinePlayers()){
+            if (pl.hasPermission("flectonechat.see.punishments"))
+                pl.sendMessage(globalMessage);
+        }
 
         String moderator = cmdSettings.getSender() != null
                 ? cmdSettings.getSender().getUniqueId().toString()

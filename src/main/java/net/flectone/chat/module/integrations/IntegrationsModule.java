@@ -2,7 +2,6 @@ package net.flectone.chat.module.integrations;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.model.advancement.FAdvancement;
 import net.flectone.chat.model.damager.PlayerDamager;
 import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.Moderation;
@@ -200,12 +199,6 @@ public class IntegrationsModule extends FModule {
         FIntegration fIntegration = get("DiscordSRV");
         if (fIntegration == null) return;
         ((FDiscordSRV) fIntegration).sendMessage(sender, typeMessage, replacements);
-    }
-
-    public static void sendDiscordAdvancement(@NotNull Player sender, @NotNull FAdvancement fAdvancement) {
-        FIntegration fIntegration = get("DiscordSRV");
-        if (fIntegration == null) return;
-        ((FDiscordSRV) fIntegration).sendAdvancementMessage(sender, fAdvancement);
     }
 
     public static void sendDiscordDeath(@NotNull Player sender, @NotNull PlayerDamager playerDamager, @NotNull String typeDeath) {

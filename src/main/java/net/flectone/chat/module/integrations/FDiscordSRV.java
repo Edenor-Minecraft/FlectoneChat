@@ -9,7 +9,6 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
-import net.flectone.chat.model.advancement.FAdvancement;
 import net.flectone.chat.model.damager.PlayerDamager;
 import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.Moderation;
@@ -150,13 +149,6 @@ public class FDiscordSRV implements Listener, FIntegration {
         sendMessage(sender, "quit", replacements);
     }
 
-    public void sendAdvancementMessage(@NotNull Player sender, @NotNull FAdvancement advancement) {
-        HashMap<String, String> replacements = new HashMap<>();
-        replacements.put("<player>", MessageUtil.formatPlayerString(sender, "<player>"));
-        replacements.put("<advancement>", advancement.getTitle());
-
-        sendMessage(sender, "advancement-" + advancement.getType(), replacements);
-    }
 
     public void sendStreamMessage(@Nullable Player sender, @NotNull String urls) {
         String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString(sender, "<player>");

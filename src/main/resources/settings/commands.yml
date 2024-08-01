@@ -59,7 +59,6 @@ chatsettings:
     - default
     - local
     - global
-    - advancement
     - death
     - join
     - greeting

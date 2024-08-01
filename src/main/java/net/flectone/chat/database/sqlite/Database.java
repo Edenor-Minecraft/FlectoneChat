@@ -407,7 +407,6 @@ public class Database extends SQLHandler {
 
                 getSettingInt(playerResult, Settings.Type.STREAM, settings);
                 getSettingInt(playerResult, Settings.Type.SPY, settings);
-                getSettingInt(playerResult, Settings.Type.ADVANCEMENT, settings);
                 getSettingInt(playerResult, Settings.Type.DEATH, settings);
                 getSettingInt(playerResult, Settings.Type.JOIN, settings);
                 getSettingInt(playerResult, Settings.Type.GREETING, settings);
@@ -675,7 +674,6 @@ public class Database extends SQLHandler {
     }
 
     private void setSettingsForStatement(@NotNull String uuid, @NotNull Settings settings, @NotNull PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, settings.getValue(Settings.Type.ADVANCEMENT));
         preparedStatement.setString(2, settings.getValue(Settings.Type.DEATH));
         preparedStatement.setString(3, settings.getValue(Settings.Type.JOIN));
         preparedStatement.setString(4, settings.getValue(Settings.Type.GREETING));

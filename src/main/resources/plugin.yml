@@ -110,8 +110,6 @@ permissions:
     default: true
   flectonechat.server.tab.player-list-name:
     default: true
-  flectonechat.server-message.advancement:
-    default: true
   flectonechat.server-message.death:
     default: true
   flectonechat.server-message.join:
@@ -153,8 +151,6 @@ permissions:
   flectonechat.sounds.extra.mark:
     default: true
   flectonechat.sounds.extra.spit:
-    default: true
-  flectonechat.sounds.server-message.advancement:
     default: true
   flectonechat.sounds.server-message.death:
     default: true
@@ -259,8 +255,6 @@ permissions:
   flectonechat.commands.chatcolor:
     default: true
   flectonechat.commands.chatsettings:
-    default: true
-  flectonechat.commands.chatsettings.advancement:
     default: true
   flectonechat.commands.chatsettings.death:
     default: true

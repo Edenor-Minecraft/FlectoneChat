@@ -9,7 +9,6 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.manager.FileManager;
 import net.flectone.chat.model.metric.Metrics;
 import net.flectone.chat.module.FModule;
-import net.flectone.chat.module.serverMessage.advancement.AdvancementModule;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
@@ -88,10 +87,6 @@ public final class FlectoneChat extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        FModule fModule = moduleManager.get(AdvancementModule.class);
-        if (fModule instanceof AdvancementModule advancementModule) {
-            advancementModule.terminateAnnounce();
-        }
 
         playerManager.terminateAll();
 

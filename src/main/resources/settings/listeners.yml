@@ -65,9 +65,6 @@ server-message:
   quit:
     PlayerQuitEvent: "LOWEST"
 
-  advancement:
-    PlayerAdvancementDoneEvent: "LOWEST"
-
   death:
     ProjectileHitEvent: "LOWEST"
     PlayerInteractEvent: "LOWEST"

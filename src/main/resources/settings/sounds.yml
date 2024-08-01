@@ -65,9 +65,6 @@ default:
       type: "ENTITY_LLAMA_SPIT:0.3:1"
 
   server-message:
-    advancement:
-      enable: false
-      type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     death:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"

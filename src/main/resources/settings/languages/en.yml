@@ -89,17 +89,6 @@ default:
         player: "&&1🪦 &&2<player> &&1was killed by player &&2<killer> <by_item>"
         zombie: "&&1🪦 &&2<player> &&1was eaten by a &&2<killer> <due_to>"
 
-    advancement:
-      task:
-        name: "#4eff52🌠 &&2<player> &&1has completed the task #4eff52[<advancement>]"
-        hover: "#4eff52<name> \n<description>"
-      goal:
-        name: "#f2d40f🌠 &&2<player> &&1has completed the goal #f2d40f[<advancement>]"
-        hover: "#f2d40f<name> \n<description>"
-      challenge:
-        name: "#834eff🌠 &&2<player> &&1has completed the challenge #834eff[<advancement>]"
-        hover: "#834eff<name> \n<description>"
-
     join:
       message: "#4eff52→ &&2<player>"
 

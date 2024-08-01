@@ -29,7 +29,6 @@ public class Settings {
         CHAT("chat"),
         STREAM("stream"),
         SPY("spy"),
-        ADVANCEMENT("enable_advancement"),
         DEATH("enable_death"),
         JOIN("enable_join"),
         GREETING("enable_greeting"),
